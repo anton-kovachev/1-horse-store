@@ -1,0 +1,84 @@
+# Compiler files
+cache/
+out/
+*.sol.metadata.json
+
+# Ignores development broadcast logs
+!/broadcast
+/broadcast/*/31337/
+/broadcast/**/dry-run/
+
+# Docs
+docs/
+
+# Dotenv file
+.env
+.env.local
+.env.production
+
+# Foundry
+forge-cache/
+lcov.info
+*.log
+
+# Node modules (if using npm/yarn)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Testing
+coverage/
+*.coverage
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Build artifacts
+artifacts/
+typechain/
+typechain-types/
+
+# Temporary files
+*.tmp
+.temp/
+temp/
+
+# Gas reports
+.gas-snapshot
+gas-report.txt
+
+# Huff artifacts
+*.bin
+*.bin-runtime
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+*.so
+
+# Solidity coverage
+coverage.json
+coverageEnv/
+
+# Slither
+.slither/
+slither.db.json
+
+# Mythril
+.mythril/
+
+# Local development
+.secret
+secrets.json
+private_keys/
+
+# OS files
+Thumbs.db
+.directory

@@ -1,0 +1,61 @@
+
+//CALLDATA 0xcdfead2e00000000000000000000000000000000000000000000000000000000
+//Let's find the function selector -> route in the code that updates horses
+
+//function selector 0xcdfead2e
+#define function updateHorseNumber(uint256) nonpayable returns()
+//function selector 0xe026c017 
+#define function readNumberOfHorses() view returns(uint256) 
+
+#define constant NUMBER_OF_HORSES_STORAGE_SLOT = FREE_STORAGE_POINTER() // 0
+
+#define macro MAIN() = takes(0) returns(0) {
+    0x00 // PUSH1 0x00
+    calldataload //[calldata(32)]
+    0xe0 //[0xe0, calldata(32)]
+    shr //[shift to function_selector]
+
+    dup1 //[function_selector, function_selector]
+    __FUNC_SIG(updateHorseNumber) //[0xcdfead2e, function_selector, function_selector] 
+    eq    //[true/false, function_selector] if func selector matches, false otherwise
+    //jump to updateHorseNumber is true
+    updateJump //[updateHorseNumberProgramCounter, true/false, function_selector]
+    jumpi
+
+    __FUNC_SIG(readNumberOfHorses) // [0xe026c017, function_selector]
+    eq // [true/false]
+    readJump //[readJum, true/false]
+    jumpi // JUMPI to updateHorseNumber
+
+    0x00 0x00 revert
+
+    updateJump: //updateHorseNumberProgramCounter, true/false
+        SET_NUMBER_OF_HORSES()
+    
+    readJump:
+        READ_NUMBER_OF_HORSES()
+}
+
+//0x036f9a6f   0000000000000000000000000000000000000000000000000000000000000007
+#define macro SET_NUMBER_OF_HORSES() = takes(0) returns(0) {
+    // 1. Get the value to store from calldata
+    0x04 //4 bytes for the func_selector
+    calldataload //calldata - func_selector = input parameter [input_parameter_value]
+    // 2. Give it a storage slot
+    [NUMBER_OF_HORSES_STORAGE_SLOT] // [storage slot ptr, input_parameter_value]
+    // 3. sstore opcode
+    sstore
+    stop
+}
+
+#define macro READ_NUMBER_OF_HORSES() = takes(0) returns(0) {
+    // 1. Get the storage slot
+    [NUMBER_OF_HORSES_STORAGE_SLOT] //[key]
+    // 2. Load the value of that slot into memory
+    sload // [value]
+    0x00 // [0, value]
+    mstore // Stack: [] stack empty  Memory: [value]
+
+    0x20 0x00 // Memory Stack [0, 32]
+    return
+}
