@@ -9,11 +9,7 @@ contract HorseStoreHuffV2 is Base_TestV2 {
 
     function setUp() public override {
         horseStore = HorseStore(
-            HuffDeployer
-                .config()
-                .with_args(
-                    bytes.concat(abi.encode(NFT_NAME), abi.encode(NFT_SYMBOL))
-                )
+            HuffDeployer.config().with_args(bytes.concat(abi.encode(NFT_NAME), abi.encode(NFT_SYMBOL)))
                 .deploy(horseStoreLocation)
         );
     }

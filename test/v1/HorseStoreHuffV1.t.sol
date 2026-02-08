@@ -10,10 +10,6 @@ contract HorseStoreHuffV is Base_TestV1 {
     string public constant HORSE_STORE_HUFF_PATH = "horseStoreV1/HorseStore";
 
     function setUp() public override {
-        horseStore = IHorseStore(
-            address(
-                HorseStore(HuffDeployer.config().deploy(HORSE_STORE_HUFF_PATH))
-            )
-        );
+        horseStore = IHorseStore(address(HorseStore(HuffDeployer.config().deploy(HORSE_STORE_HUFF_PATH))));
     }
 }
